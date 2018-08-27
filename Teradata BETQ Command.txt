@@ -1,0 +1,3182 @@
+Bteq Command Notes:
+
+ - All BTEQ commands must be preceded by a dot '.' character.
+ - BTEQ commands may end with a semicolon ';'.
+ - Any command that does not start with a dot is assumed to be a DBC/SQL query and it will be submitted to the Teradata Database.
+ - BTEQ commands may be executed in a DBC/SQL macro by using the ECHO statement, for example:
+
+      ECHO '.HELP BTEQ';
+
+
+
+Note: There are no identical BTEQ and Teradata SQL commands.
+
+
+
+MODIFY USER td_user20 as STARTUP = 'ECHO ''.set width 500''';
+
+MODIFY USER td_user20 as STARTUP = NULL;
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+.show version
+
+.show version
+ BTEQ Version 13.00.00.03 for Win 32 running Windows Sockets
+ CLIV2      : 13.00.00.01
+ COPERR.H   : 13.00.00.02
+ COPTYPES.H : 13.00.00.00
+ DBCAREA.H  : 13.00.00.00
+ DBCERR.H   : 12.00.00.00
+ DBCHQEP.H  : 13.00.00.05
+ MOSIIF.H   : 13.00.00.04
+ PARCEL.H   : 13.00.00.05
+ TDGSS      : 13.00.00.00
+ PIOM       : 13.00.00.001
+ TDICU      : 13.00.00.01
+ Database   : 13.00.00.12
+
+ BTEQ linking date is Mar 26 2009
+
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+BT
+;insert into emp1 values(1116,40,'Hari','Yadav',50000,'Pune')
+;insert into emp1 values(1117,20,'Depto','Biswas',60000,'Delhi')
+;insert into emp1 values(1118,40,'Rohit','Marwah',40000,'Chennai')
+;update emp1 set salary=50000 where first_name='Dev'
+;ET;
+
+ *** Begin transaction accepted.
+ *** Total elapsed time was 1 second.
+
+
+ *** Insert completed. One row added.
+
+ *** Insert completed. One row added.
+
+ *** Insert completed. One row added.
+
+ *** Update completed. One row changed.
+
+ *** End transaction accepted.
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select *  from  emp1 order by 1;
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+     EMP_NO      DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY  ADDRESS
+-----------  -----------  --------------------  --------------------  ------------  ----------
+       1111           10  Ram                   Singh                     50000.00  Delhi
+       1112           20  Dev                   Singh                     50000.00  Pune
+       1113           30  Mark                  Taylor                    60000.00  Chennai
+       1114           20  John                  Brown                     40000.00  Chennai
+       1115           10  Pritam                Singh                     50000.00  Delhi
+       1116           40  Hari                  Yadav                     50000.00  Pune
+       1117           20  Depto                 Biswas                    60000.00  Delhi
+       1118           40  Rohit                 Marwah                    40000.00  Chennai
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+Teradata BTEQ 13.10.00.00 for WIN32. Enter your logon or BTEQ command:
+
+.set logonprompt off
+*** Logon prompts disabled. Type .LOGONPROMPT ON; to re-enable.
+Teradata BTEQ 13.10.00.00 for WIN32. Enter your logon or BTEQ command:
+
+.show controls logonprompt
+
+ [SET] LOGONPROMPT = OFF
+
+
+Note that setting LOGONPROMPT to OFF is sometimes not going to be sufficient for suppressing all unnecessary prompts when using Windows BTEQ. 
+You may also need to instruct CLI to suppress its generation of what is known as its GUILOGON dialog box.
+
+This can be accomplished by setting the environment variable GUILOGON to NO.
+
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+
+
+FULLYEAR
+
+Purpose
+
+Enables you to use a four-digit year format (YYYY) to comply with the year 2000 format. The default is a two-digit year format (YY). 
+
+FULLYEAR will affect only the titles, headings and footings. 
+
+It won't affect the outcome of SQL statements. 
+
+
+
+Example 1.
+
+
+.set fullyear on;
+.show control format;
+
+ [SET] FORMAT = OFF
+
+
+select * from emp1 order by 1;
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+     EMP_NO     DEPT_NO FIRST_NAME           LAST_NAME                  SAL
+----------- ----------- -------------------- -------------------- ---------
+       1111          10 Ram                  Singh                       50
+       1112          20 Dev                  Singh                       50
+       1113          30 Mark                 Taylor                      60
+       1114          20 John                 Brown                       40
+       1115          10 Pritam               Singh                       50
+       1116          40 Hari                 Yadav                       50
+       1117          20 Depto                Biswas                      60
+       1118          40 Rohit                Marwah                      40
+
+
+
+
+
+Example 2.
+
+
+.set format on;
+
+select * from emp1 order by 1;
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+2017/01/20             select * from emp1 order by 1;             Page    1
+
+     EMP_NO     DEPT_NO FIRST_NAME           LAST_NAME                  SAL
+----------- ----------- -------------------- -------------------- ---------
+       1111          10 Ram                  Singh                       50
+       1112          20 Dev                  Singh                       50
+       1113          30 Mark                 Taylor                      60
+       1114          20 John                 Brown                       40
+       1115          10 Pritam               Singh                       50
+       1116          40 Hari                 Yadav                       50
+       1117          20 Depto                Biswas                      60
+       1118          40 Rohit                Marwah                      40
+
+
+
+
+Example 3.
+
+
+.set heading  '&DATE ||Confidential|| Page&PAGE'
+.set pagelength 20
+.SET FOOTING '&TIME || Confidential Report//Part Two'
+
+select * from emp1 order by 1;
+
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+2017/01/20                      Confidential                      Page    1
+
+     EMP_NO     DEPT_NO FIRST_NAME           LAST_NAME                  SAL
+----------- ----------- -------------------- -------------------- ---------
+       1111          10 Ram                  Singh                       50
+       1112          20 Dev                  Singh                       50
+       1113          30 Mark                 Taylor                      60
+       1114          20 John                 Brown                       40
+       1115          10 Pritam               Singh                       50
+       1116          40 Hari                 Yadav                       50
+       1117          20 Depto                Biswas                      60
+       1118          40 Rohit                Marwah                      40
+
+
+
+
+
+
+10:25                           Confidential Report
+                                  Part Two
+
+
+
+
+
+
+
+
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+
+.SET RETLIMIT 5;
+.SET WIDTH 100;
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+.set RETCANCEL ON
+
+.set RETCANCEL ON
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+.set retlimit 2;
+
+.set retlimit 2;
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select *  from dbc.accessrights;
+
+select *  from dbc.accessrights;
+
+ *** Query completed. 5510 rows found. 12 columns returned.
+ *** Total elapsed time was 1 second.
+
+UserId    DatabaseId  TVMId         FieldId  AccessRight  WithGrant  GrantorID  AllnessFlag  CreateUID
+--------  ----------  ------------  -------  -----------  ---------  ---------  -----------  ---------
+0000EF03  0000EF03    000000000000        0  RS           N          00000100   N            00000100
+00000000  00000000    000000000000        0  R            Y          00000100   N            00000100
+ *** Warning: RetLimit exceeded.
+              Cancelling the request.
+
+
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+.set RETCANCEL OFF
+
+.set RETCANCEL OFF
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select *  from dbc.accessrights;
+
+select *  from dbc.accessrights;
+
+ *** Query completed. 5510 rows found. 12 columns returned.
+ *** Total elapsed time was 1 second.
+
+UserId    DatabaseId  TVMId         FieldId  AccessRight  WithGrant  GrantorID  AllnessFlag  CreateUID
+--------  ----------  ------------  -------  -----------  ---------  ---------  -----------  ---------
+0000EF03  0000EF03    000000000000        0  RS           N          00000100   N            00000100
+00000000  00000000    000000000000        0  R            Y          00000100   N            00000100
+ *** Warning: RetLimit exceeded.
+              Ignoring the rest of the output.
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+Specifying Report Format
+
+
+
+CREATE TABLE EMP1 (
+EMP_NO		INTEGER,
+DEPT_NO 	INTEGER,
+FIRST_NAME 	VARCHAR(20),
+LAST_NAME 	CHAR(20),
+SALARY 		DECIMAL(10,2),
+ADDRESS 	VARCHAR(100)) 
+UNIQUE PRIMARY INDEX (EMP_NO);
+
+insert emp1 values(1111,10,'Ram','Singh',50000,'Delhi');
+insert emp1 values(1112,20,'Dev','Singh',30000,'Pune');
+insert emp1 values(1113,30,'Mark','Taylor',60000,'Chennai');
+insert emp1 values(1114,20,'John','Brown',40000,'Chennai');
+insert emp1 values(1115,10,'Pritam','Singh',50000,'Delhi');
+
+
+.SET SKIPLINE ON
+.SET SKIPDOUBLE ON
+.SET UNDERLINE ON;
+.SET SUPPRESS ON 1;
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+
+
+
+    DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+-----------  --------------------  --------------------  ------------
+         10  Pritam                Singh                     50000.00
+
+
+
+
+---------------------------------------------------------------------
+
+             Ram                   Singh                     50000.00
+
+
+
+
+---------------------------------------------------------------------
+
+         30  Mark                  Taylor                    60000.00
+
+
+
+
+---------------------------------------------------------------------
+
+         20  Dev                   Singh                     30000.00
+
+
+
+
+---------------------------------------------------------------------
+
+             John                  Brown                     40000.00
+
+
+
+
+
+
+.SET SKIPLINE ON 1
+.SET SKIPDOUBLE OFF
+.SET UNDERLINE OFF
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+
+    DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+-----------  --------------------  --------------------  ------------
+         10  Pritam                Singh                     50000.00
+             Ram                   Singh                     50000.00
+
+         30  Mark                  Taylor                    60000.00
+
+         20  Dev                   Singh                     30000.00
+             John                  Brown                     40000.00
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+
+
+.SET PAGEBREAK ON 1
+.SET SUPPRESS  ON 1
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+
+    DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+-----------  --------------------  --------------------  ------------
+         10  Pritam                Singh                     50000.00
+             Ram                   Singh                     50000.00
+
+         30  Mark                  Taylor                    60000.00
+
+         20  Dev                   Singh                     30000.00
+             John                  Brown                     40000.00
+
+ 
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+.SET SEPARATOR "|"
+.SET SUPPRESS ON 1
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+
+    DEPT_NO|FIRST_NAME          |LAST_NAME           |      SALARY
+----------- -------------------- -------------------- ------------
+         10|Pritam              |Singh               |    50000.00
+           |Ram                 |Singh               |    50000.00
+
+         30|Mark                |Taylor              |    60000.00
+
+         20|Dev                 |Singh               |    30000.00
+           |John                |Brown               |    40000.00
+
+ 
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+FORMAT
+
+Purpose
+
+Enables all of the page-oriented formatting commands, or disables them and centers the response from SQL SELECT statements, 
+using the value of the WIDTH command option to determine the space available.
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+.show control format;
+
+ [SET] FORMAT = OFF
+
+
+
+Usage Notes
+
+In response to the FORMAT command, BTEQ either recognizes or ignores the format specifications that have been set using the following 
+page-oriented formatting commands:
+
+• FOOTING
+• FORMCHAR
+• HEADING
+• RTITLE
+• PAGEBREAK
+• PAGELENGTH
+
+
+When you set the FORMAT command option to OFF, BTEQ ignores the configuration of these command options, 
+even though they are shown as ON in the response to a SHOW CONTROLS command. 
+
+
+In general, setting FORMAT to OFF is appropriate for directing the output to the screen, 
+and ON is appropriate for directing the output to a file for printing.
+
+
+
+
+Example 1.
+
+
+.set defaults
+.set format on
+.set heading ' Teradata Format Report'
+.set sidetitles on
+.set skipline on 1
+.set width 150
+.set pagelength 30
+.footing 'Super Confidential Report'
+select * from emp1 order by 1;
+
+
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+                                                                 Teradata Format Report
+
+
+EMP_NO        1111 DEPT_NO          10 FIRST_NAME Ram                  LAST_NAME Singh                SALARY     50000.00 ADDRESS Delhi
+
+EMP_NO        1112 DEPT_NO          20 FIRST_NAME Dev                  LAST_NAME Singh                SALARY     50000.00 ADDRESS Pune
+
+EMP_NO        1113 DEPT_NO          30 FIRST_NAME Mark                 LAST_NAME Taylor               SALARY     60000.00 ADDRESS Chennai
+
+EMP_NO        1114 DEPT_NO          20 FIRST_NAME John                 LAST_NAME Brown                SALARY     40000.00 ADDRESS Chennai
+
+EMP_NO        1115 DEPT_NO          10 FIRST_NAME Pritam               LAST_NAME Singh                SALARY     50000.00 ADDRESS Delhi
+
+EMP_NO        1116 DEPT_NO          40 FIRST_NAME Hari                 LAST_NAME Yadav                SALARY     50000.00 ADDRESS Pune
+
+EMP_NO        1117 DEPT_NO          20 FIRST_NAME Depto                LAST_NAME Biswas               SALARY     60000.00 ADDRESS Delhi
+
+EMP_NO        1118 DEPT_NO          40 FIRST_NAME Rohit                LAST_NAME Marwah               SALARY     40000.00 ADDRESS Chennai
+
+                                                               Super Confidential Report
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+.set defaults
+.set format on
+.set heading ' Teradata Format Report'
+.set sidetitles off
+.set skipline on 1
+.set width 150
+.set pagelength 30
+.footing 'Super Confidential Report'
+select * from emp1 order by 1;
+
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+                                                                 Teradata Format Report
+
+
+     EMP_NO     DEPT_NO FIRST_NAME           LAST_NAME                  SALARY ADDRESS
+----------- ----------- -------------------- -------------------- ------------ -----------------------------------------------------------
+       1111          10 Ram                  Singh                    50000.00 Delhi
+
+       1112          20 Dev                  Singh                    50000.00 Pune
+
+       1113          30 Mark                 Taylor                   60000.00 Chennai
+
+       1114          20 John                 Brown                    40000.00 Chennai
+
+       1115          10 Pritam               Singh                    50000.00 Delhi
+
+       1116          40 Hari                 Yadav                    50000.00 Pune
+
+       1117          20 Depto                Biswas                   60000.00 Delhi
+
+       1118          40 Rohit                Marwah                   40000.00 Chennai
+
+
+
+
+
+
+
+
+
+                                                               Super Confidential Report
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+Change format setting to off
+
+
+.set defaults
+.set format off
+.set heading ' Teradata Format Report'
+.set sidetitles off
+.set skipline on 1
+.set width 150
+.set pagelength 30
+.footing 'Super Confidential Report'
+select * from emp1 order by 1;
+
+
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+
+     EMP_NO     DEPT_NO FIRST_NAME           LAST_NAME                  SALARY ADDRESS
+----------- ----------- -------------------- -------------------- ------------ ----------------------
+       1111          10 Ram                  Singh                    50000.00 Delhi
+
+       1112          20 Dev                  Singh                    50000.00 Pune
+
+       1113          30 Mark                 Taylor                   60000.00 Chennai
+
+       1114          20 John                 Brown                    40000.00 Chennai
+
+       1115          10 Pritam               Singh                    50000.00 Delhi
+
+       1116          40 Hari                 Yadav                    50000.00 Pune
+
+       1117          20 Depto                Biswas                   60000.00 Delhi
+
+       1118          40 Rohit                Marwah                   40000.00 Chennai
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+
+
+
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+FORMCHAR
+
+Purpose
+
+Provides format control for printing reports. The command has four options: ON, OFF, DEFAULT or any HEX sequence that a printer translates into a printer escape sequence (for example, "0C"XB or 'oc'xb).
+
+
+where:
+• OFF = initial default for network-attached systems
+• DEFAULT = initial default for channel-attached systems
+
+
+
+
+Usage Notes
+
+Use the FORMCHAR command when you need to specify form feed characters for printing reports.
+
+
+Certain printers accept only a special numeric sequence in HEX to produce a form feed at the end of a page. 
+You can use either uppercase or lowercase characters when entering the HEX sequence.
+
+
+
+NOTE: Check on BTEQ prompt some other symbols are dispalyed. This file cannot save unicode characters.
+
+
+
+
+.SET FORMAT ON
+.SET FORMCHAR   "0C"XB
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select * from emp1 order by 1;
+
+select * from emp1 order by 1;
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/20              select * from emp1 order by 1;              Page    1
+
+     EMP_NO     DEPT_NO FIRST_NAME           LAST_NAME                  SAL
+----------- ----------- -------------------- -------------------- ---------
+       1111          10 Ram                  Singh                       50
+       1112          20 Dev                  Singh                       50
+       1113          30 Mark                 Taylor                      60
+       1114          20 John                 Brown                       40
+       1115          10 Pritam               Singh                       50
+       1116          40 Hari                 Yadav                       50
+       1117          20 Depto                Biswas                      60
+       1118          40 Rohit                Marwah                      40
+?
+
+
+
+
+
+
+
+.set formchar 'e7'xb
+
+select * from emp1 order by 1;
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/20              select * from emp1 order by 1;              Page    1
+
+     EMP_NO     DEPT_NO FIRST_NAME           LAST_NAME                  SAL
+----------- ----------- -------------------- -------------------- ---------
+       1111          10 Ram                  Singh                       50
+       1112          20 Dev                  Singh                       50
+       1113          30 Mark                 Taylor                      60
+       1114          20 John                 Brown                       40
+       1115          10 Pritam               Singh                       50
+       1116          40 Hari                 Yadav                       50
+       1117          20 Depto                Biswas                      60
+       1118          40 Rohit                Marwah                      40
+t
+ 
+
+
+
+.set formchar 'e10'xb
+ 
+select * from emp1 order by 1;
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/20              select * from emp1 order by 1;              Page    1
+
+     EMP_NO     DEPT_NO FIRST_NAME           LAST_NAME                  SAL
+----------- ----------- -------------------- -------------------- ---------
+       1111          10 Ram                  Singh                       50
+       1112          20 Dev                  Singh                       50
+       1113          30 Mark                 Taylor                      60
+       1114          20 John                 Brown                       40
+       1115          10 Pritam               Singh                       50
+       1116          40 Hari                 Yadav                       50
+       1117          20 Depto                Biswas                      60
+       1118          40 Rohit                Marwah                      40
+??
+
+
+
+
+.set formchar 'e11'xb
+
+select * from emp1 order by 1;
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/20              select * from emp1 order by 1;              Page    1
+
+     EMP_NO     DEPT_NO FIRST_NAME           LAST_NAME                  SAL
+----------- ----------- -------------------- -------------------- ---------
+       1111          10 Ram                  Singh                       50
+       1112          20 Dev                  Singh                       50
+       1113          30 Mark                 Taylor                      60
+       1114          20 John                 Brown                       40
+       1115          10 Pritam               Singh                       50
+       1116          40 Hari                 Yadav                       50
+       1117          20 Depto                Biswas                      60
+       1118          40 Rohit                Marwah                      40
+??
+ 
+
+
+
+
+.set formchar 'e12'xb
+
+select * from emp1 order by 1;
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/20              select * from emp1 order by 1;              Page    1
+
+     EMP_NO     DEPT_NO FIRST_NAME           LAST_NAME                  SAL
+----------- ----------- -------------------- -------------------- ---------
+       1111          10 Ram                  Singh                       50
+       1112          20 Dev                  Singh                       50
+       1113          30 Mark                 Taylor                      60
+       1114          20 John                 Brown                       40
+       1115          10 Pritam               Singh                       50
+       1116          40 Hari                 Yadav                       50
+       1117          20 Depto                Biswas                      60
+       1118          40 Rohit                Marwah                      40
+??
+ 
+
+
+
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+
+
+FOLDLINE
+
+Purpose
+
+Splits each line of a report into two or more lines after the specified columns. This compresses the report into a smaller width.
+
+
+
+By using the FOLDLINE ON ALL form of the command, you can effectively change the format of your reports from horizontal to vertical by reporting each
+column value on a new line.
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+.SET FOLDLINE ON ALL
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+    DEPT_NO
+-----------
+   FIRST_NAME
+   --------------------
+   LAST_NAME
+   --------------------
+         SALARY
+   ------------
+         10
+   Pritam
+   Singh
+       50000.00
+         10
+   Ram
+   Singh
+       50000.00
+         30
+   Mark
+   Taylor
+       60000.00
+         20
+   Dev
+   Singh
+       30000.00
+         20
+   John
+   Brown
+       40000.00
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+.SET FOLDLINE ON 1,2
+
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 8 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+    DEPT_NO
+-----------
+   FIRST_NAME
+   --------------------
+   LAST_NAME                   SALARY
+   --------------------  ------------
+         20
+   Depto
+   Biswas                    60000.00
+         10
+   Ram
+   Singh                     50000.00
+         10
+   Pritam
+   Singh                     50000.00
+         20
+   Dev
+   Singh                     50000.00
+         30
+   Mark
+   Taylor                    60000.00
+         40
+   Rohit
+   Marwah                    40000.00
+         40
+   Hari
+   Yadav                     50000.00
+         20
+   John
+   Brown                     40000.00
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+
+
+You can add the SIDETITLES command to reposition the headings to the left side of the rows.
+
+
+.SET SIDETITLES ON
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+   DEPT_NO           10
+FIRST_NAME  Pritam
+ LAST_NAME  Singh
+    SALARY      50000.00
+   DEPT_NO           10
+FIRST_NAME  Ram
+ LAST_NAME  Singh
+    SALARY      50000.00
+   DEPT_NO           30
+FIRST_NAME  Mark
+ LAST_NAME  Taylor
+    SALARY      60000.00
+   DEPT_NO           20
+FIRST_NAME  Dev
+ LAST_NAME  Singh
+    SALARY      30000.00
+   DEPT_NO           20
+FIRST_NAME  John
+ LAST_NAME  Brown
+    SALARY      40000.00
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+
+HEADING
+
+
+Purpose
+
+Specifies a header that appears at the top of each page of a report.
+
+
+
+Usage Notes
+
+The HEADING command and the RTITLE command are alternate versions of the same command. They both specify the top ten lines on each page of a report. 
+
+If you use both commands, the most recent one overrides the earlier one.
+
+
+The RTITLE command automatically provides the page number and the date; the HEADING command does not. 
+
+When using the HEADING command, you must provide the &PAGE, &DATE and &TIME substitution values in you header string if you want the page numbers, date and time to appear in your header.
+
+
+You should not use special characters within the header string because they may be interpreted differently by different output devices. You might have to modify a script that uses special characters if you route your output to another device.
+
+If the string will have an apostrophe (single quote) character, use the second form of the HEADING command (the one with double quotes as delimiters) or double the apostrophe.
+
+For example,
+
+.SET HEADING "December's Results"
+
+or
+
+.SET HEADING 'December''s Results'
+
+
+If the string will not have an apostrophe, the two forms of the HEADING command are equivalent.
+
+
+
+
+
+.set format on
+
+.set heading
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/17 select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from e ... Page    1
+
+       DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+   -----------  --------------------  --------------------  ------------
+            10  Pritam                Singh                     50000.00
+            10  Ram                   Singh                     50000.00
+            30  Mark                  Taylor                    60000.00
+            20  Dev                   Singh                     30000.00
+            20  John                  Brown                     40000.00
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+ 
+.set heading  'Confidintial'
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+                                Confidintial
+
+       DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+   -----------  --------------------  --------------------  ------------
+            10  Pritam                Singh                     50000.00
+            10  Ram                   Singh                     50000.00
+            30  Mark                  Taylor                    60000.00
+            20  Dev                   Singh                     30000.00
+            20  John                  Brown                     40000.00
+
+
+
+
+
+
+
+.SET HEADING 'This is an -
+example of a continued -
+heading'
+
+.SET HEADING 'This is an example of a continued heading'
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+                 This is an example of a continued heading
+
+       DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+   -----------  --------------------  --------------------  ------------
+            10  Pritam                Singh                     50000.00
+            10  Ram                   Singh                     50000.00
+            30  Mark                  Taylor                    60000.00
+            20  Dev                   Singh                     30000.00
+            20  John                  Brown                     40000.00
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+
+.set heading  '&DATE ||Confidential|| Page&PAGE'
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/17                       Confidential                       Page    1
+
+       DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+   -----------  --------------------  --------------------  ------------
+            10  Pritam                Singh                     50000.00
+            10  Ram                   Singh                     50000.00
+            30  Mark                  Taylor                    60000.00
+            20  Dev                   Singh                     30000.00
+            20  John                  Brown                     40000.00
+
+
+
+
+
+
+.set heading  '&DATE &TIME ||Confidential|| Page&PAGE//Employee Details//Joined in Year//2017'
+
+
+select * from emp1 order by 1;
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+2017/01/20 10:53                                Confidential                               Page    1
+                                          Employee Details
+                                           Joined in Year
+                                                2017
+
+     EMP_NO     DEPT_NO FIRST_NAME           LAST_NAME                  SALARY ADDRESS
+----------- ----------- -------------------- -------------------- ------------ ---------------------
+       1111          10 Ram                  Singh                    50000.00 Delhi
+       1112          20 Dev                  Singh                    50000.00 Pune
+       1113          30 Mark                 Taylor                   60000.00 Chennai
+       1114          20 John                 Brown                    40000.00 Chennai
+       1115          10 Pritam               Singh                    50000.00 Delhi
+       1116          40 Hari                 Yadav                    50000.00 Pune
+       1117          20 Depto                Biswas                   60000.00 Delhi
+       1118          40 Rohit                Marwah                   40000.00 Chennai
+
+
+
+ 
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+RTITLE
+
+Purpose
+
+Specifies a title that appears at the top of each page of a report. Titles specified by the RTITLE command automatically include the date and page number.
+
+
+
+The RTITLE command and the HEADING command are alternate versions of the same command. 
+They both specify the top ten lines on each page of a report. If you use both commands, the most recent one overrides the earlier one.
+
+The RTITLE command automatically provides the page number, and the date in YY/MM/DD format. 
+
+When using the HEADING command you must include the &PAGE, &DATE and &TIME substitution values in your header string if you want the page numbers, date and time to appear in your header.
+
+
+
+
+.SET RTITLE 'December''s Joining'
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/17                    December's Joining                    Page    1
+
+       DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+   -----------  --------------------  --------------------  ------------
+            10  Pritam                Singh                     50000.00
+            10  Ram                   Singh                     50000.00
+            30  Mark                  Taylor                    60000.00
+            20  Dev                   Singh                     30000.00
+            20  John                  Brown                     40000.00
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+NOTE: Report title will replace the report heading.
+
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+FOOTING
+
+Purpose
+
+Specifies the footer text string that appears at the bottom of each page of a report.
+
+
+
+.set PAGELENGTH 20
+.SET FOOTING '&DATE||Confidential Report||Page&PAGE//Part Two'
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/17                    December's Joining                    Page    1
+
+       DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+   -----------  --------------------  --------------------  ------------
+            10  Pritam                Singh                     50000.00
+            10  Ram                   Singh                     50000.00
+            30  Mark                  Taylor                    60000.00
+            20  Dev                   Singh                     30000.00
+            20  John                  Brown                     40000.00
+
+
+
+17/01/17                    Confidential Report                   Page    1
+                                  Part Two
+
+
+
+
+
+
+
+.SET FOOTING 'Confidential Report//Part Two'
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/17                    December's Joining                    Page    1
+
+       DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+   -----------  --------------------  --------------------  ------------
+            10  Pritam                Singh                     50000.00
+            10  Ram                   Singh                     50000.00
+            30  Mark                  Taylor                    60000.00
+            20  Dev                   Singh                     30000.00
+            20  John                  Brown                     40000.00
+
+
+
+
+                            Confidential Report
+                                  Part Two
+
+ 
+
+
+
+
+
+
+
+.SET FOOTING '&TIME || Confidential Report//Part Two'
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1;
+
+ *** Query completed. 5 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/17                    December's Joining                    Page    1
+
+       DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+   -----------  --------------------  --------------------  ------------
+            10  Pritam                Singh                     50000.00
+            10  Ram                   Singh                     50000.00
+            30  Mark                  Taylor                    60000.00
+            20  Dev                   Singh                     30000.00
+            20  John                  Brown                     40000.00
+
+
+
+
+23:27                           Confidential Report
+                                  Part Two
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+WITH Clause Output
+
+A SELECT SQL statement that has a WITH clause specifies summary lines and breaks
+(grouping conditions) that determine how selected results are returned (typically for subtotals).
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1 WITH sum(salary);
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1 WITH sum(salary);
+
+ *** Query completed. 6 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/17                    December's Joining                    Page    1
+
+
+       DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+   -----------  --------------------  --------------------  ------------
+            20  John                  Brown                     40000.00
+            30  Mark                  Taylor                    60000.00
+            10  Pritam                Singh                     50000.00
+            10  Ram                   Singh                     50000.00
+            20  Dev                   Singh                     30000.00
+                                                            ------------
+                                               Sum(SALARY)     230000.00
+
+
+
+
+
+
+23:39                           Confidential Report
+                                  Part Two
+
+
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+ 
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1 WITH sum(salary)(title '');
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1 WITH sum(salary)(title '');
+
+ *** Query completed. 6 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/17                    December's Joining                    Page    1
+
+
+       DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+   -----------  --------------------  --------------------  ------------
+            20  John                  Brown                     40000.00
+            30  Mark                  Taylor                    60000.00
+            10  Pritam                Singh                     50000.00
+            10  Ram                   Singh                     50000.00
+            20  Dev                   Singh                     30000.00
+                                                               230000.00
+
+
+
+23:54                           Confidential Report
+                                  Part Two
+
+
+NOTE: Total as Sum(SALARY) is not displayed.
+
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1 WITH sum(salary)(title 'Total');
+
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1 WITH sum(salary)(title 'Total');
+
+ *** Query completed. 6 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/18                    December's Joining                    Page    1
+
+
+       DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY
+   -----------  --------------------  --------------------  ------------
+            20  John                  Brown                     40000.00
+            30  Mark                  Taylor                    60000.00
+            10  Pritam                Singh                     50000.00
+            10  Ram                   Singh                     50000.00
+            20  Dev                   Singh                     30000.00
+                                                            ------------
+                                                     Total     230000.00
+
+
+
+12:10                           Confidential Report
+                                  Part Two
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+
+
+Converting Screen Displays to Reports
+
+
+You can convert screen displays to reports when using BTEQ interactively or with a run file. 
+In addition, on network-attached systems, you can do the same with a standard input file.
+
+
+Network-Attached Example
+
+This is an example of a file on a network-attached system:
+
+
+
+.logon 127.0.0.1/td06, admin#123
+.export report file=c:\report.txt
+.set format on
+.set rtitle '&DATE ||Department Information||Page&Page'
+.SET FOOTING '&TIME || Confidential Report//Part Two'
+.set pagelength 20
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1 WITH sum(salary)(title 'Total');
+.set format off
+.export reset
+.logoff
+.exit
+
+
+Copy these all text in a script file named script_export.txt and run the script as below:
+
+
+C:\Users\Administrator>bteq < C:\Users\Administrator\Desktop\Teradata_Capgemini\Teradata_Doc\script_export.txt
+
+BTEQ 13.00.00.03 Wed Jan 18 13:03:12 2017
+
++---------+---------+---------+---------+---------+---------+---------+----
+.logon 127.0.0.1/td06,
+
+ *** Logon successfully completed.
+ *** Teradata Database Release is 13.00.00.12
+ *** Teradata Database Version is 13.00.00.12
+ *** Transaction Semantics are BTET.
+ *** Character Set Name is 'ASCII'.
+
+ *** Total elapsed time was 1 second.
+
++---------+---------+---------+---------+---------+---------+---------+----
+.export report file=c:\report.txt
+ *** To reset export, type .EXPORT RESET
++---------+---------+---------+---------+---------+---------+---------+----
+.set format on
++---------+---------+---------+---------+---------+---------+---------+----
+.set rtitle '&DATE ||Department Information||Page&Page'
++---------+---------+---------+---------+---------+---------+---------+----
+.SET FOOTING '&TIME || Confidential Report//Part Two'
++---------+---------+---------+---------+---------+---------+---------+----
+.set pagelength 20
++---------+---------+---------+---------+---------+---------+---------+----
+select DEPT_NO, FIRST_NAME, LAST_NAME, SALARY from emp1 WITH sum(salary)(ti
+tle 'Total');
+
+ *** Query completed. 6 rows found. 4 columns returned.
+ *** Total elapsed time was 1 second.
+
+
++---------+---------+---------+---------+---------+---------+---------+----
+.set format off
++---------+---------+---------+---------+---------+---------+---------+----
+.export reset
+ *** Output returned to console.
++---------+---------+---------+---------+---------+---------+---------+----
+.logoff
+ *** You are now logged off from the DBC.
++---------+---------+---------+---------+---------+---------+---------+----
+ *** Warning: EOF on INPUT stream.
+.exit
+ *** Exiting BTEQ...
+ *** RC (return code) = 0
+
+
+
+
+Check the report in C: directory.
+
+
+
+
+
+
+If you want to flush the on command prompt log to a file then use log output file as like below (C:\output_log.txt):
+
+
+C:\Users\Administrator>bteq < C:\Users\Administrator\Desktop\Teradata_Capgemini\Teradata_Doc\script_export.txt > C:\output_log.txt
+
+ *** Warning: EOF on INPUT stream.
+
+
+Check the report in C:\ directory for export file and log file.
+
+
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+
+
+Difference Between = and REPEAT
+The = command is similar to the REPEAT command with the following differences:
+
+• You must enter REPEAT before the request that you want to repeat, and = after the request.
+
+• REPEAT specifies the total number of times that you want to submit the following request;
+  = specifies how many more times you want to resubmit the last request.
+
+• REPEAT can resubmit a request repetitively until the import file is exhausted; = cannot.
+
+The = command applies to the most recent Teradata SQL request, even if one or more BTEQ commands have occurred after the last Teradata SQL request. 
+
+Note that this command is most appropriate for the SELECT statement, because it does not actually affect the contents of the database. 
+
+Always be careful when using the = command to resubmit a statement that affects the contents of the database.
+
+You cannot use the = command in a Teradata SQL macro.
+
+
+
+select *  from  emp1 order by 1;
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+     EMP_NO      DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY  ADDRESS
+-----------  -----------  --------------------  --------------------  ------------  ---------
+       1111           10  Ram                   Singh                     50000.00  Delhi
+       1112           20  Dev                   Singh                     50000.00  Pune
+       1113           30  Mark                  Taylor                    60000.00  Chennai
+       1114           20  John                  Brown                     40000.00  Chennai
+       1115           10  Pritam                Singh                     50000.00  Delhi
+       1116           40  Hari                  Yadav                     50000.00  Pune
+       1117           20  Depto                 Biswas                    60000.00  Delhi
+       1118           40  Rohit                 Marwah                    40000.00  Chennai
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+=2
+
+=2
+ *** Starting at Wed Jan 18 15:19:31 2017
+
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+     EMP_NO      DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY  ADDRESS
+-----------  -----------  --------------------  --------------------  ------------  ----------
+       1111           10  Ram                   Singh                     50000.00  Delhi
+       1112           20  Dev                   Singh                     50000.00  Pune
+       1113           30  Mark                  Taylor                    60000.00  Chennai
+       1114           20  John                  Brown                     40000.00  Chennai
+       1115           10  Pritam                Singh                     50000.00  Delhi
+       1116           40  Hari                  Yadav                     50000.00  Pune
+       1117           20  Depto                 Biswas                    60000.00  Delhi
+       1118           40  Rohit                 Marwah                    40000.00  Chennai
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+     EMP_NO      DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY  ADDRESS
+-----------  -----------  --------------------  --------------------  ------------  ----------
+       1111           10  Ram                   Singh                     50000.00  Delhi
+       1112           20  Dev                   Singh                     50000.00  Pune
+       1113           30  Mark                  Taylor                    60000.00  Chennai
+       1114           20  John                  Brown                     40000.00  Chennai
+       1115           10  Pritam                Singh                     50000.00  Delhi
+       1116           40  Hari                  Yadav                     50000.00  Pune
+       1117           20  Depto                 Biswas                    60000.00  Delhi
+       1118           40  Rohit                 Marwah                    40000.00  Chennai
+
+ *** Finished at Wed Jan 18 15:19:31 2017
+ *** Total number of statements: 2,  Accepted : 2,  Rejected : 0
+
+ *** Total elapsed time was 1 second.
+
+ *** Total requests sent to the DBC = 2
+ *** Successful requests per second =  2.000
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+Simply only = means once
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+=
+
+=
+ *** Warning: Nonnumeric after '='.
+              REPEAT value is set to 1.
+
+ *** Query completed. 8 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+     EMP_NO      DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY  ADDRESS
+-----------  -----------  --------------------  --------------------  ------------  ----------
+       1111           10  Ram                   Singh                     50000.00  Delhi
+       1112           20  Dev                   Singh                     50000.00  Pune
+       1113           30  Mark                  Taylor                    60000.00  Chennai
+       1114           20  John                  Brown                     40000.00  Chennai
+       1115           10  Pritam                Singh                     50000.00  Delhi
+       1116           40  Hari                  Yadav                     50000.00  Pune
+       1117           20  Depto                 Biswas                    60000.00  Delhi
+       1118           40  Rohit                 Marwah                    40000.00  Chennai
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+
+
+REPEAT
+
+Purpose
+
+Submits the next Teradata SQL request a specified number of times.
+
+
+
+
+Example 1.
+
+
+CREATE TABLE EMP2 (
+EMP_NO  	INTEGER,
+FIRST_NAME  	CHAR(10),
+LAST_NAME  	CHAR(10),
+SALARY   	INTEGER,
+ADDRESS  	CHAR(10),
+DEPT_NO  	INTEGER)
+NO PRIMARY INDEX;
+
+ *** Table has been created.
+ *** Total elapsed time was 1 second.
+
+
+
+
+.REPEAT 3
+
+insert into emp2 values(1111,'Mark','Tence',50000,'Chennai',10);
+
+ *** Starting at Fri Jan 20 11:27:23 2017
+
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+
+ *** Finished at Fri Jan 20 11:27:24 2017
+ *** Total number of statements: 3,  Accepted : 3,  Rejected : 0
+
+ *** Total elapsed time was 1 second.
+
+ *** Total requests sent to the DBC = 3
+ *** Successful requests per second =  3.000
+
+ 
+
+select * from emp2;
+
+ *** Query completed. 3 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+     EMP_NO  FIRST_NAME  LAST_NAME         SALARY  ADDRESS         DEPT_NO
+-----------  ----------  ----------  ------------  ----------  -----------
+       1111  Mark        Tence           50000.00  Chennai              10
+       1111  Mark        Tence           50000.00  Chennai              10
+       1111  Mark        Tence           50000.00  Chennai              10
+
+ 
+
+
+
+
+
+
+Example 2.
+
+
+.EXPORT DATA FILE=C:\Users\Administrator\Desktop\Teradata_Capgemini\datafile2
+SELECT   * FROM emp2;
+.EXPORT RESET
+
+
+
+
+.IMPORT DATA FILE=C:\Users\Administrator\Desktop\Teradata_Capgemini\datafile2
+.REPEAT *
+USING (
+EMP_NO  	INTEGER,
+FIRST_NAME  	CHAR(10),
+LAST_NAME  	CHAR(10),
+SALARY   	INTEGER,
+ADDRESS  	CHAR(10),
+DEPT_NO  	INTEGER)
+INSERT INTO EMP2 
+VALUES (:EMP_NO , :FIRST_NAME , :LAST_NAME , :SALARY, :ADDRESS, :DEPT_NO);
+
+
+
+
+SELECT   * FROM emp2;
+
+ *** Query completed. 6 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+     EMP_NO  FIRST_NAME  LAST_NAME         SALARY  ADDRESS         DEPT_NO
+-----------  ----------  ----------  ------------  ----------  -----------
+       1111  Mark        Tence           50000.00  Chennai              10
+       1111  Mark        Tence           50000.00  Chennai              10
+       1111  Mark        Tence           50000.00  Chennai              10
+       1111  Mark        Tence           50000.00  Chennai              10
+       1111  Mark        Tence           50000.00  Chennai              10
+       1111  Mark        Tence           50000.00  Chennai              10
+
+ 
+
+
+
+
+Example 3.
+
+
+CREATE TABLE EMP3 (
+FIRST_NAME      VARCHAR(10),
+LAST_NAME       VARCHAR(10),
+ADDRESS         VARCHAR(10))
+NO PRIMARY INDEX;
+
+
+
+Create the Import text file and copy all these comma(,) delimited records in it. This data will be loaded into EMP3 table.
+
+
+Hari,Yadav,Pune
+Ram,Singh,Chennai
+Dev,Narang,Bangalore
+Sunny,Mehta,Delhi
+Honey,Singh,Mumbai
+
+
+
+.import VARTEXT ',' FILE = 'C:\Users\Administrator\Desktop\Teradata_Capgemini\Teradata_Doc\Import.txt'
+
+.REPEAT *
+
+
+USING(FIRST_NAME VARCHAR(10), LAST_NAME VARCHAR(10), ADDRESS VARCHAR(10) ) INSERT INTO EMP3(FIRST_NAME,LAST_NAME, ADDRESS)
+VALUES(:FIRST_NAME, :LAST_NAME, :ADDRESS);
+
+ *** Starting Row 0 at Fri Jan 20 15:28:34 2017
+
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+ *** Warning: Out of data.
+ *** Finished at input row 5 at Fri Jan 20 15:28:34 2017
+ *** Total number of statements: 5,  Accepted : 5,  Rejected : 0
+
+ *** Total elapsed time was 1 second.
+
+ *** Total requests sent to the DBC = 5
+ *** Successful requests per second =  5.000
+
+
+
+SELECT   * FROM emp3;
+
+ *** Query completed. 5 rows found. 3 columns returned.
+ *** Total elapsed time was 1 second.
+
+FIRST_NAME  LAST_NAME   ADDRESS
+----------  ----------  ----------
+Hari        Yadav       Pune
+Ram         Singh       Chennai
+Dev         Narang      Bangalore
+Sunny       Mehta       Delhi
+Honey       Singh       Mumbai
+
+
+
+
+
+
+
+Example 4. 
+
+
+Now data is seperated by pipe(|) delimiters.
+
+
+.import VARTEXT '|' FILE = 'C:\Users\Administrator\Desktop\Teradata_Capgemini\Teradata_Doc\Import.txt'
+
+.REPEAT *
+
+USING(FIRST_NAME VARCHAR(10), LAST_NAME VARCHAR(10), ADDRESS VARCHAR(10) ) INSERT INTO EMP3(FIRST_NAME,LAST_NAME, ADDRESS)
+VALUES(:FIRST_NAME, :LAST_NAME, :ADDRESS);
+
+
+
+Check the table data.
+
+SELECT   * FROM emp3;
+
+
+
+
+
+Example 5. 
+
+
+
+.EXPORT INDICDATA FILE='C:\Users\Administrator\Desktop\Teradata_Capgemini\datafile2.txt'
+SELECT   * FROM emp2;
+.EXPORT RESET
+
+
+
+
+.IMPORT INDICDATA FILE='C:\Users\Administrator\Desktop\Teradata_Capgemini\datafile2.txt' 
+
+.REPEAT *
+USING (EMP_NO INTEGER, FIRST_NAME CHAR(10), LAST_NAME CHAR(10), SALARY INTEGER, ADDRESS CHAR(10), DEPT_NO  INTEGER)
+INSERT INTO EMP2 VALUES (:EMP_NO , :FIRST_NAME , :LAST_NAME , :SALARY, :ADDRESS, :DEPT_NO);
+
+
+
+Check the table data.
+
+SELECT   * FROM emp2;
+
+
+
+
+
+Example 6.
+
+
+Try report mode export and inport 
+
+
+.EXPORT REPORT FILE='C:\teradata_export\export_dept.txt'
+SELECT   * FROM dept;
+.EXPORT RESET
+
+
+.IMPORT REPORT FILE='C:\teradata_export\export_dept.txt', skip=2
+.REPEAT *
+USING (DEPTNO CHAR(11), DNAME CHAR(20), LOC CHAR(20))
+INSERT INTO dept1(deptno, dname, loc) VALUES (:DEPTNO , :DNAME , :LOC);
+
+
+
+
+.IMPORT REPORT FILE='C:\Users\Administrator\Desktop\Teradata_Capgemini\datafile2.txt', skip=2
+.REPEAT *
+USING (EMP_NO CHAR(11), FIRST_NAME CHAR(10), LAST_NAME CHAR(10), SALARY CHAR(11), ADDRESS CHAR(10), DEPT_NO INTEGER)
+INSERT INTO EMP2 VALUES (:EMP_NO , :FIRST_NAME , :LAST_NAME , :SALARY, :ADDRESS, :DEPT_NO);
+
+
+NOTE: GARBAGE CHARACTER INSERTED.........................
+
+
+SELECT   * FROM emp2;
+
+ *** Query completed. 24 rows found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+     EMP_NO  FIRST_NAME  LAST_NAME        SALARY  ADDRESS         DEPT_NO
+-----------  ----------  ----------  -----------  ----------  -----------
+       1111  Mark        Tence             50000  Chennai              10
+       1111  Mark        Tence             50000  Chennai              10
+       1111  Mark        Tence             50000  Chennai              10
+       1111  Mark        Tence             50000  Chennai              10
+       1111  Mark        Tence             50000  Chennai              10
+       1111  Mark        Tence             50000  Chennai              10
+       1111  Mark        Tence             50000  Chennai              10
+       1111  Mark        Tence             50000  Chennai              10
+       1111  Mark        Tence             50000  Chennai              10
+       1111  Mark        Tence             50000  Chennai              10
+       1111    Mark          Tence             0   50000  Ch   1634627173
+       1111  Mark        Tence             50000  Chennai              10
+       1111    Mark          Tence             0   50000  Ch   1634627173
+       1111  Mark        Tence             50000  Chennai              10
+       1111    Mark          Tence             0   50000  Ch   1634627173
+       1111    Mark          Tence             0   50000  Ch   1634627173
+       1111    Mark          Tence             0   50000  Ch   1634627173
+       1111    Mark          Tence             0   50000  Ch   1634627173
+       1111    Mark          Tence             0   50000  Ch   1634627173
+       1111    Mark          Tence             0   50000  Ch   1634627173
+       1111    Mark          Tence             0   50000  Ch   1634627173
+       1111    Mark          Tence             0   50000  Ch   1634627173
+       1111    Mark          Tence             0   50000  Ch   1634627173
+       1111    Mark          Tence             0   50000  Ch   1634627173
+
+
+
+
+
+
+Example 7.
+
+
+create table EMP10(empid integer)
+NO PRIMARY INDEX;
+
+insert into emp10 values(100);
+insert into emp10 values(200);
+insert into emp10 values(300);
+
+
+SELECT   * FROM emp10 ORDER BY 1;
+
+ *** Query completed. 3 rows found. One column returned.
+ *** Total elapsed time was 1 second.
+
+      empid
+-----------
+        100
+        200
+        300
+
+
+
+.EXPORT REPORT FILE='C:\teradata_export\export_emp10.txt'
+SELECT   * FROM emp10;
+.EXPORT RESET
+
+
+
+
+.iMPORT REPORT FILE='C:\teradata_export\export_emp10.txt', SKIP=2
+.REPEAT *
+using (empid char(11))
+insert into EMP10(empid) values (:empid);
+
+
+SELECT   * FROM emp10 ORDER BY 1;
+
+ *** Query completed. 6 rows found. One column returned.
+ *** Total elapsed time was 1 second.
+
+      empid
+-----------
+        100
+        100
+        200
+        200
+        300
+        300
+
+
+
+The USING phrase must describe the input data, not the table. We used REPORT format for export, so the data is in CHAR not INTEGER. If you are using the default INTEGER format '-(10)9', then your USING clause needs to say CHAR(11).
+
+but why length of the char is 11?
+
+CHAR(11) is one byte for the sign byte.
+
+
+
+
+
+***********************************************************************************************************************************************************
+***********************************************************************************************************************************************************
+
+
+
+
+ABORT
+
+Purpose
+
+From channel-attached systems, aborts the previous request and returns control to the BTEQ prompt.
+
+Not valid from network-attached client systems.
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+.abort
+
+.abort
+ *** Error: Unrecognized command ABORT
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+AUTOKEYRETRIEVE
+
+Purpose
+
+Enables users to specify whether the values of any fields associated with Identity Data are returned in response to a SQL Insert operation. 
+
+Unlike other session control commands, CLI's SPB files (HSHSPB or clispb.dat) do not provide a means for specifying use of auto generated
+key retrieval. It can only be invoked at the BTEQ script level through AUTOKEYRETRIEVE command use.
+
+
+.show control AUTOKEYRETRIEVE;
+
+ [SET] AUTOKEYRETRIEVE = OFF
+
+
+OFF 	the initial value for AUTOKEYRETRIVE is OFF. Not specifying an argument for the command is equivalent to specifying OFF.
+ROW 	the identity column should be included along with the entire resulting row.
+COLUMN 	only the identity column associated with INSERT statements should be returned.
+
+
+
+
+Example 1
+
+This example shows the effects of having executed the AUTOKEYRETRIEVE OFF command.
+
+.show control AUTOKEYRETRIEVE;
+
+ [SET] AUTOKEYRETRIEVE = OFF
+
+
+CREATE TABLE MyTest1
+, NO FALLBACK
+, NO BEFORE JOURNAL
+, NO AFTER JOURNAL
+(
+empno 		INTEGER GENERATED ALWAYS AS IDENTITY,
+salary		INTEGER
+)
+PRIMARY INDEX ( empno );
+
+
+
+If the following SQL insert statement is submitted with AUTOKEYRETRIEVE set to OFF.
+
+
+INSERT INTO MyTest1 VALUES(,50000);
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+
+the result generated only shows an activity count and elapsed time status messages.
+
+
+
+
+
+
+Example 2
+
+This example shows the effects of having executed the AUTOKEYRETRIEVE COLUMN command.
+
+
+.set AUTOKEYRETRIEVE COLUMN;
+
+
+Given the following table definition for an empty table:
+
+
+CREATE TABLE MyTest2
+, NO FALLBACK
+, NO BEFORE JOURNAL
+, NO AFTER JOURNAL
+(
+empno		INTEGER GENERATED ALWAYS AS IDENTITY,
+salary 		INTEGER
+)
+PRIMARY INDEX ( empno );
+
+
+
+If the following SQL insert statement is submitted with AUTOKEYRETRIEVE set to COLUMN,
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+INSERT INTO MyTest2 VALUES(,40000);
+
+INSERT INTO MyTest2 VALUES(,40000);
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+      empno
+-----------
+          1
+
+
+the result generated includes the value generated for the identity column.
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+INSERT INTO MyTest2 VALUES(,50000);
+
+INSERT INTO MyTest2 VALUES(,50000);
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+      empno
+-----------
+          2
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+INSERT INTO MyTest2 VALUES(,30000);
+
+INSERT INTO MyTest2 VALUES(,30000);
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+      empno
+-----------
+          3
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+
+Example 3
+
+This example shows the effects of having executed the AUTOKEYRETRIEVE ROW command.
+
+.set AUTOKEYRETRIEVE ROW;
+
+
+CREATE TABLE MyTest3
+, NO FALLBACK
+, NO BEFORE JOURNAL
+, NO AFTER JOURNAL
+(
+empno		 INTEGER GENERATED ALWAYS AS IDENTITY,
+salary		 INTEGER
+) 
+PRIMARY INDEX ( empno);
+
+
+
+If the following SQL insert statement is submitted with AUTOKEYRETRIEVE set to ROW,
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+INSERT INTO MyTest3 VALUES(,15000);
+
+INSERT INTO MyTest3 VALUES(,15000);
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+      empno       salary
+-----------  -----------
+          1        15000
+
+
+the result generated includes values for the entire row generated for the insert.
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+INSERT INTO MyTest3 VALUES(,25000);
+
+INSERT INTO MyTest3 VALUES(,25000);
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+      empno       salary
+-----------  -----------
+          2        25000
+
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+INSERT INTO MyTest3 VALUES(,35000);
+
+INSERT INTO MyTest3 VALUES(,35000);
+
+ *** Insert completed. One row added.
+ *** Total elapsed time was 1 second.
+
+      empno       salary
+-----------  -----------
+          3        35000
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select * from mytest3 order by 1;
+
+ *** Query completed. 3 rows found. 2 columns returned.
+ *** Total elapsed time was 1 second.
+
+      empno       salary
+-----------  -----------
+          1        15000
+          2        25000
+          3        35000
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+
+DECIMALDIGITS
+
+Purpose
+
+Overrides the precision specified by a CLI System Parameter Block (SPB), or if that entry does not exist, indicates what the precision
+should be for decimal values associated with issued SQL requests for non-Field Mode responses.
+
+The maximum decimal digits to return applies to all of the record modes (Record, Indicator,and Multipart Indicator), but does not apply 
+to Field Mode. In Field Mode, a CAST must be performed or the FORMAT clause must be used.
+
+The difference in behavior between Field and Record/Indicator Modes occurs because Field Mode deals with formatted data, where either 
+FORMAT or CAST can be easily used. 
+
+In the Record/Indicator Mode, the data is in internal representation, such as, packed decimal for DECIMAL data returned to the mainframe, 
+where compatibility is important.
+
+1) The Indicator Mode behavior with .SET DECIMALDIGITS n is the same as doing an explicit CAST.
+
+2) The Field Mode, behavior ignores .SET DECIMALDIGITS n. To get the same effect in Field Mode as in Indicator Mode with .SET DECIMALDIGITS n, 
+   perform either a CAST to DECIMAL(n,n), or perform a FORMAT clause with n digits specified.
+
+
+.show control decimaldigits
+
+ [SET] DECIMALDIGITS = 0  (SPB DEFAULT)
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+ 1)
+
+.set decimaldigits  15;
+.SET INDICDATA ON;
+.set width 300
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select * from emp1 where emp_no=1111;
+
+select * from emp1 where emp_no=1111;
+
+ *** Success, Stmt# 1 ActivityCount = 1
+ *** Query completed. One row found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+
+ *** Dump of Parcel DATAINFO:
+  0000  0600 F101 0400 F101  0400 C101 1400 C501  1400 E501 020A C101  6400                 *........................d.*
+ *** Record#1. Dump Of Data:
+  0000  0057 0400 000A 0000  0003 0052 616D 5369  6E67 6820 2020 2020  2020 2020 2020 2020  *.W.........RamSingh             *
+  0020  2020 404B 4C00 0000  0000 0500 4465 6C68  69                                        *  @KL.......Delhi*
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select EMP_NO,DEPT_NO,FIRST_NAME,LAST_NAME,cast(SALARY as decimal(20,5)),ADDRESS  from  emp1 e where emp_no=1111;
+
+select EMP_NO,DEPT_NO,FIRST_NAME,LAST_NAME,cast(SALARY as decimal(20,5)),ADDRESS  from  emp1 e where emp_no=1111;
+
+ *** Success, Stmt# 1 ActivityCount = 1
+ *** Query completed. One row found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+
+ *** Dump of Parcel DATAINFO:
+  0000  0600 F101 0400 F101  0400 C101 1400 C501  1400 E501 050F C101  6400                 *........................d.*
+ *** Record#1. Dump Of Data:
+  0000  0057 0400 000A 0000  0003 0052 616D 5369  6E67 6820 2020 2020  2020 2020 2020 2020  *.W.........RamSingh             *
+  0020  2020 00F2 052A 0100  0000 0500 4465 6C68  69                                        *  ...*......Delhi*
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+2)
+
+.set defaults;
+.set decimaldigits  15;
+.SET INDICDATA OFF;
+.SET RECORDMODE OFF;
+.set width 300
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select * from emp1 where emp_no=1111;
+
+select * from emp1 where emp_no=1111;
+
+ *** Query completed. One row found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+     EMP_NO      DEPT_NO  FIRST_NAME            LAST_NAME                   SALARY  ADDRESS
+-----------  -----------  --------------------  --------------------  ------------  ------------------------------
+       1111           10  Ram                   Singh                     50000.00  Delhi
+
+ 
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select EMP_NO,DEPT_NO,FIRST_NAME,LAST_NAME,cast(SALARY as decimal(20,5)),ADDRESS  from  emp1 e where emp_no=1111;
+
+select EMP_NO,DEPT_NO,FIRST_NAME,LAST_NAME,cast(SALARY as decimal(20,5)),ADDRESS  from  emp1 e where emp_no=1111;
+
+ *** Query completed. One row found. 6 columns returned.
+ *** Total elapsed time was 1 second.
+
+     EMP_NO      DEPT_NO  FIRST_NAME            LAST_NAME                             SALARY  ADDRESS
+-----------  -----------  --------------------  --------------------  ----------------------  --------------------
+       1111           10  Ram                   Singh                            50000.00000  Delhi
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+
+ECHOREQ Command
+
+Purpose
+
+Specifies whether a copy of the Teradata SQL requests and BTEQ commands should be placed in the standard output stream.
+
+
+By default, the echo required function (ECHOREQ command) is enabled. This returns an exact copy of every BTEQ command and 
+Teradata SQL statement to the standard output stream. When using BTEQ interactively, this means that BTEQ redisplays (echoes) 
+everything you enter; you will see everything twice.
+
+BTEQ does not echo the password portion of the LOGON command.
+
+You cannot use the ECHOREQ command in a Teradata SQL macro.
+
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+.show control echoreq;
+
+.show control echoreq;
+
+ [SET] ECHOREQ = ON
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+select user;
+
+select user;
+
+ *** Query completed. One row found. One column returned.
+ *** Total elapsed time was 1 second.
+
+User
+------------------------------
+TD06
+
+
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+CREATE USER TD01
+AS
+PERMANENT = 100000 BYTES
+PASSWORD = admin$123
+TEMPORARY = 100000 BYTES
+SPOOL = 100000 BYTES;
+
+CREATE USER TD01
+AS
+PERMANENT = 100000 BYTES
+PASSWORD = admin$123
+TEMPORARY = 100000 BYTES
+SPOOL = 100000 BYTES;
+
+ *** User has been created.
+ *** Total elapsed time was 1 second.
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+drop user td01;
+
+drop user td01;
+
+ *** Database/User has been dropped.
+ *** Total elapsed time was 1 second.
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+.SET ECHOREQ OFF
+
+.SET ECHOREQ OFF
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+CREATE USER TD01
+AS
+PERMANENT = 100000 BYTES
+PASSWORD = admin$123
+TEMPORARY = 100000 BYTES
+SPOOL = 100000 BYTES;
+
+
+ *** User has been created.
+ *** Total elapsed time was 1 second.
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+drop user td01;
+
+
+ *** Database/User has been dropped.
+ *** Total elapsed time was 1 second.
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+
+
+
+
+
+EXPORT Command
+
+Purpose
+
+Specifies the name and format of an export file that BTEQ will use to store database information returned by a subsequent SQL SELECT statement.
+
+
+Note: The EXPORT command should not be run on Teradata Database console window of the AWS. This is because the output file specification specifies the 
+      location of the file on the current TPA (trusted parallel application) control node and will appear on this current node and not on the AWS where 
+      it is being run.
+
+
+
+
+Example 1.
+
+Suppressing Title Text and Titledashes in EXPORT REPORT Output.
+
+The default setting of Field Mode when you specify .EXPORT REPORT or .EXPORT RESET
+
+
+
+
+The following example demonstrates how to suppress the generation of column headers and titledashes at the top of an exported report.
+
+
+
+CREATE TABLE Employer_Location (EmpNo INTEGER, Location CHAR(5));
+INSERT INTO Employer_Location VALUES(1, 'LA');
+INSERT INTO Employer_Location VALUES(2, 'NYC');
+INSERT INTO Employer_Location VALUES(3, 'ATL');
+.SET TITLEDASHES OFF
+.EXPORT REPORT FILE=C:\Export_example1.exp
+SELECT EmpNo (TITLE ''), Location (TITLE '') FROM Employer_Location;
+.EXPORT RESET
+.SET TITLEDASHES ON
+.EXPORT REPORT FILE=C:\Export_example2.exp
+SELECT EmpNo, Location FROM Employer_Location;
+.EXPORT RESET
+.LOGOFF
+.EXIT
+
+
+
+Out of file Export_example1.exp
+
+          3  ATL
+          1  LA
+          2  NYC
+
+
+
+Out of file Export_example2.exp
+
+      EmpNo  Location
+-----------  --------
+          3  ATL
+          1  LA
+          2  NYC
+
+
+
+
+
+
+
+create a script file named script_export1.txt and put the below commands
+
+
+.logon 127.0.0.1/td06, admin#123
+DROP TABLE Employer_Location;
+CREATE TABLE Employer_Location (EmpNo INTEGER, Location CHAR(5));
+INSERT INTO Employer_Location VALUES(1, 'LA');
+INSERT INTO Employer_Location VALUES(2, 'NYC');
+INSERT INTO Employer_Location VALUES(3, 'ATL');
+.SET TITLEDASHES OFF
+.EXPORT REPORT FILE=C:\Export_example1.exp
+SELECT EmpNo (TITLE ''), Location (TITLE '') FROM Employer_Location;
+.EXPORT RESET
+.SET TITLEDASHES ON
+.EXPORT REPORT FILE=C:\Export_example2.exp
+SELECT EmpNo, Location FROM Employer_Location;
+.EXPORT RESET
+.LOGOFF
+.EXIT
+
+
+Run the script.
+
+C:\Users\Administrator>bteq < C:\Users\Administrator\Desktop\Teradata_Capgemini\Teradata_Doc\script_export1.txt
+
+
+
+
+
+
+Example 2.
+
+SELECT Statement Response in Record Mode
+
+If the SQL SELECT statement generates its response in Record Mode (keyword DATA) or Indicator Mode (keyword INDICDATA), 
+BTEQ passes each row on to the export file as a record.
+
+
+On network-attached systems, each record has the following format:
+
+• The record begins with a length field, which is two bytes long and contains an unsigned binary integer whose value is the number of bytes 
+  in the record (not including the bytes in the length field and not including the byte(s) in the end-of-record field).
+
+• The record follows with binary-formatted fields that contain the column values of the selected row in record or indicator format.
+
+• The record ends with an end-of-record (line) indicator, appropriate for the workstation and operating system. 
+  For example, for UNIX, the indicator is a new line. For Windows, the indicator is a carriage return/line feed pair. 
+  In all cases, the end-of-record character, or characters, are in the bit-format appropriate for the workstation. For example, in ASCII
+  for an ASCII workstation.
+
+
+On channel-attached systems, each record has the following format:
+The record consists of binary-formatted fields that contain the column values of the selected row in record or indicator format.
+
+
+
+Record Mode is automatically set when you specify .EXPORT DATA. 
+
+The default setting of Field Mode is automatically reset when you specify .EXPORT REPORT or .EXPORT RESET,
+or when you set either the INDICDATA or RECORDMODE command option to OFF.
+
+
+
+
+create a script file named script_export2.txt and put the below commands
+
+.logon 127.0.0.1/td06, admin#123
+DROP TABLE Employer_Location;
+CREATE TABLE Employer_Location (EmpNo INTEGER, Location CHAR(5));
+INSERT INTO Employer_Location VALUES(1, 'LA');
+INSERT INTO Employer_Location VALUES(2, 'NYC');
+INSERT INTO Employer_Location VALUES(3, 'ATL');
+.EXPORT DATA FILE=C:\Export_example3.exp
+SELECT EmpNo, Location FROM Employer_Location;
+.EXPORT RESET
+.LOGOFF
+.EXIT
+
+
+C:\Users\Administrator>bteq < C:\Users\Administrator\Desktop\Teradata_Capgemini\Teradata_Doc\script_export2.txt
+
+
+Try out also with Emp1 table record.
+
+
+
+Example 3.
+
+
+create a script file named script_export3.txt and put the below commands
+
+.logon 127.0.0.1/td06, admin#123
+DROP TABLE Employer_Location;
+CREATE TABLE Employer_Location (EmpNo INTEGER, Location CHAR(5));
+INSERT INTO Employer_Location VALUES(1, 'LA');
+INSERT INTO Employer_Location VALUES(2, 'NYC');
+INSERT INTO Employer_Location VALUES(3, 'ATL');
+.EXPORT INDICDATA FILE=C:\Export_example4.exp
+SELECT EmpNo, Location FROM Employer_Location;
+.EXPORT RESET
+.LOGOFF
+.EXIT
+
+
+
+C:\Users\Administrator>bteq < C:\Users\Administrator\Desktop\Teradata_Capgemini\Teradata_Doc\script_export2.txt
+
+
+NOTE: RECORDMODE and INDICDATA will show same representation.
+
+
+
+
+
+
+
+.SET SESSION TRANSACTION ANSI | BTET
+.LOGON localtd/dbc
+
+
+
+
+Line Break
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+.REMARK 'I am coming//from forget code';
+
+
+
+.REMARK 'This is a line of commentary// And another line too'
+
+.REMARK ’This is a line //of commentary// And another line//too’ 
+
+
+
+
+
+
+
+The NULL specification identifies the character or a string of characters that BTEQ uses to represent null value fields in the results 
+of a Teradata SQL SELECT statement. The default value is a single question mark character.
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+.show control null;
+
+.show control null;
+
+ [SET] NULL = ?
+
+
+
+.SET NULL AS 'string'; /* Sting as null keyword*/
+.SET NULL AS 'null';
+.SET NULL AS '---';
+
+
+
+
+
+
+
+
+By default, BTEQ initializes in Field Mode to support interactive operations. Field Mode is defined when both the RECORDMODE and INDICDATA (indicator mode) 
+command options are set to OFF.
+
+There is no corresponding FIELD command to specify the Field Mode.
+
+
+You can use Record or Indicator Mode in interactive operations, however, when you need to test scripts or macros that send responses to an export file. 
+
+A “hex-dump” style output will be generated. 
+
+Leading asterisks may be placed in the results to indicate the end of a sequential set of result lines that are identical. 
+
+For example, the asterisk following 2710 in the fourth line below indicates that the lines for 0010 through 2700 are identical.
+
+*** Record#1. Dump of Data:
+0000 0030 3510 2700 0000 0000 00AA BBCC 0000 *.05.'...........*
+0010 0000 0000 0000 0000 0000 0000 0000 0000 *................*
+2710 *0000 0000 0000 0000 DDEE FF *...........*
+
+
+Note: If the return data will have null values, use the INDICDATA command; if not, use the RECORDMODE command.
+
+
+
+.SET RECORDMODE ON
+
+or
+
+.SET INDICDATA ON
+
+
+
+INDICDATA : Returns the results of a query to a file using indicator variables to identify null values.
+BTEQ returns data in Indicator Mode and stores it in the appropriate format.
+
+Note: INDICDATA is the only valid data format specification if the LARGEDATAMODE setting is ON.
+
+
+
+
+
+.HANG n
+
+n - Seconds
+Default value for n is 360 seconds.
+
+
+
+set session dateform = ANSIDATE ;  /*format is yyyy-mm-dd */                
+set session dateform = integerdate ; /* format is yy/mm/dd -TERADATA date format */
+
+
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select top 5 * from dbc.dbase;
+
+select top 5 * from dbc.dbase;
+
+ *** Query completed. 5 rows found. 52 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/16              select top 5 * from dbc.dbase;              Page    1
+
+DatabaseNameI
+---------------------------------------------------------------------------
+SYS_CALENDAR
+CRASHDUMPS
+TDPUSER
+FINANCIAL
+SYSTEMFE
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+=1
+
+=1
+
+ *** Query completed. 5 rows found. 52 columns returned.
+ *** Total elapsed time was 1 second.
+
+17/01/16              select top 5 * from dbc.dbase;              Page    1
+
+DatabaseNameI
+---------------------------------------------------------------------------
+SYS_CALENDAR
+CRASHDUMPS
+TDPUSER
+FINANCIAL
+SYSTEMFE
+
+
+
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+.SET TIMEMSG QUERY
+
+.SET TIMEMSG QUERY
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select count(*) from dbc.dbase;
+
+select count(*) from dbc.dbase;
+
+ *** Query completed. One row found. One column returned.
+ *** Total elapsed time was 1 second.
+
+   Count(*)
+-----------
+         25
+
+
+ *** Total Query time was 1 second.
+
+ 
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+Please note that total query time is the output of TIMEMSG command and it is different from Total elapsed time. 
+
+
+
+You can set the number of sessions for BTEQ to process the queries in parallel manner. 
+For example, if you want to insert 1 lakh records into a database which approximately takes 100 minutes, then SET the sessions to 10. 
+The time will be (1/10) now. 
+
+
+.SET SESSIONS n
+
+where n is the number of sessions. 
+
+
+
+
+.SET WIDTH 100;
+.SET SUPPRESS ON 1,2;
+.SET FOLDLINE ON 2;
+
+
+
+.set indicdata on
+
+
+
+
+
+
+sel c.name as User_Name, b.databasename as Database_Name, a.accessright 
+from dbc.accessrights a join dbc.dbase b
+on a.databaseid = b.databaseid
+join dbc.UserDB c
+on a.userid = c.id
+where c.name = 'td06';
+
+
+
+MODIFY USER td07 as STARTUP = 'ECHO ''.set width 500''';
+
+MODIFY USER td07 as STARTUP = NULL;
+
+
+
+
+
+
+Create a script file bteq_script.txt
+
+.Logon 127.0.0.1/dbc,dbc ;
+ Select top 10 * from dbc.tables;
+.Quit
+
+
+
+C:\Users\Administrator>bteq
+
+ Teradata BTEQ 13.00.00.03 for WIN32.
+ Copyright 1984-2009, Teradata Corporation. ALL RIGHTS RESERVED.
+ Enter your logon or BTEQ command:
+ .Run File ="C:\Users\Administrator\Desktop\Teradata_Capgemini\Teradata Doc\bteq_script.txt"
+
+
+
+OR
+
+
+
+C:\Users\Administrator> bteq < "C:\Users\Administrator\Desktop\Teradata_Capgemini\Teradata Doc\script.txt"
+BTEQ 13.00.00.03 Mon Jan 16 23:09:37 2017
+
++---------+---------+---------+---------+---------+---------+---------+----
+.Logon 127.0.0.1/dbc,
+
+ *** Logon successfully completed.
+ *** Teradata Database Release is 13.00.00.12
+ *** Teradata Database Version is 13.00.00.12
+ *** Transaction Semantics are BTET.
+ *** Character Set Name is 'ASCII'.
+
+ *** Total elapsed time was 1 second.
+
++---------+---------+---------+---------+---------+---------+---------+----
+ Select top 10 * from dbc.tables;
+
+ *** Query completed. 10 rows found. 26 columns returned.
+ *** Total elapsed time was 1 second.
+
+DatabaseName                   TableName                           Version
+------------------------------ ------------------------------ ------------
+DBC                            SessionInfoVX                             1
+DBC                            FunctionsX                                1
+SYSSPATIAL                     GeoSequenceLobToRows                      2
+DBC                            AccessLog                                 1
+DBC                            ExternalSPsX                              1
+DBC                            All_RI_ChildrenV                          1
+DBC                            RI_Distinct_ChildrenV                     1
+SYSUDTLIB                      ST_Geometry_Transform                     1
+SYSUDTLIB                      ST_Geometry_Y_Get                         1
+SYSUDTLIB                      ST_GEOMETRY_MBR_YMax                      1
+
++---------+---------+---------+---------+---------+---------+---------+----
+ *** Warning: EOF on INPUT stream.
+.Quit
+ *** You are now logged off from the DBC.
+ *** Exiting BTEQ...
+ *** RC (return code) = 0
+
+
+
+
+
+
+
+C:\Users\Administrator>bteq
+
+ Teradata BTEQ 13.00.00.03 for WIN32.
+ Copyright 1984-2009, Teradata Corporation. ALL RIGHTS RESERVED.
+ Enter your logon or BTEQ command:
+.logon localtd/dbc
+
+.logon localtd/dbc
+Password:
+
+ *** Logon successfully completed.
+ *** Teradata Database Release is 13.00.00.12
+ *** Teradata Database Version is 13.00.00.12
+ *** Transaction Semantics are BTET.
+ *** Character Set Name is 'ASCII'.
+
+ *** Total elapsed time was 1 second.
+
+
+
+There are two default date settings in BTEQ. 
+After logging on to the session, you can render like below
+
+1) Set session dateform= ANSIDATE; /*format is yyyy-mm-dd*/
+2) Set session dateform=integerdate;  /*fomat is yy/mm/dd –TERADATA date format*/
+
+
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+
+Set session dateform= ANSIDATE;
+
+Set session dateform= ANSIDATE;
+
+ *** Set SESSION accepted.
+ *** Total elapsed time was 1 second.
+
+
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+select current_date;
+
+select current_date;
+
+ *** Query completed. One row found. One column returned.
+ *** Total elapsed time was 1 second.
+
+Current Date
+------------
+  2017-01-16
+
+ 
+
+
+
+BTEQ -- Enter your DBC/SQL request or BTEQ command:
+
+Set session dateform=integerdate;
+
+Set session dateform=integerdate;
+
+ *** Set SESSION accepted.
+ *** Total elapsed time was 1 second.
+
+
+
+
+ BTEQ -- Enter your DBC/SQL request or BTEQ command:
+select current_date;
+
+select current_date;
+
+ *** Query completed. One row found. One column returned.
+ *** Total elapsed time was 1 second.
+
+    Date
+--------
+17/01/16
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+BTEQ Export - Odd File Output
+
+ .run FILE c:\some_dir\logon.txt
+
+.SET WIDTH 2000
+.SET Titledashes OFF
+.SET Separator '|'
+.SET RECORDMODE OFF
+
+.EXPORT REPORT FILE=\share_drive\file_name.dat
+
+SEL 
+  A.date
+, A.time_space
+, a.cust_ids
+, A.local
+, COUNT(A.pi_col) "count" 
+FROM    database.table_name A
+WHERE A.date = DATE -3
+GROUP BY 1,2,3,4
+;
+
+.EXPORT RESET
+
+.Logoff
+
+
+
+
+
+
+
+
+
